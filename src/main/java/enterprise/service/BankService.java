@@ -37,11 +37,13 @@ public class BankService {
 	}
 	
 	@WebMethod
-	public void Inscription(
+	public String Inscription(
 			@WebParam(name = "name") String name ,
 			@WebParam(name = "password") String password,
 			@WebParam(name ="email") String email) throws Exception {
 
 		metier.signUp(name, password, email);
+		return "ok";
 	}
+
 }

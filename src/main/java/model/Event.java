@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "EVENT")
-@NamedQuery(name = "BankAccountEntity.findByAccountNo", query = "SELECT b FROM BankAccount b WHERE b.accountNo = :accountNo")
+@NamedQuery(name = "Event.findById", query = "SELECT b FROM Event b WHERE b.idEvent = :idEvent")
 
 
 public class Event implements Serializable{

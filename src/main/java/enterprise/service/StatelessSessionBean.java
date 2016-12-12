@@ -69,7 +69,7 @@ public class StatelessSessionBean implements StatelessLocal {
 	@Override
 	public User getUser(String user) {
 
-		Query query = em.createNamedQuery("Users.findByName");
+		Query query = em.createNamedQuery("User.findByName");
 		query.setParameter("name", user);
 
 		User userResult = (User) query.getSingleResult();
@@ -133,11 +133,24 @@ public class StatelessSessionBean implements StatelessLocal {
 	@Override
 	public void signUp(String name, String password, String email)throws Exception {
 		try {
-			Query query = em.createNamedQuery("Users.createNewUser");
+			/*Query query = em.createNamedQuery("Users.createNewUser");
 			query.setParameter("name", name);
 			query.setParameter("password", password);
 			query.setParameter("email", email);
-
+			int res = query.executeUpdate();
+			System.out.println("res ="+res);*/
+			User user = new User();
+			user.setName(name);
+			user.setPassword(password);
+			user.setEmail(email);
+			System.out.println("ouverture transaction");
+			UserTransaction utx = context.getUserTransaction();
+			utx.begin();
+			System.out.println("persist");
+			em.persist(user);
+			utx.commit();
+			System.out.println("fin");
+		
 
 			
 		} catch (Exception e) {

@@ -16,15 +16,15 @@ import java.util.List;
 {
 
 
-@NamedQuery(name="Users.findAll", query="SELECT b FROM Users b"),
+@NamedQuery(name="Users.findAll", query="SELECT b FROM User b"),
 
 
 
-@NamedQuery( name = "Users.findByBankCustomersPk", query = "SELECT b FROM Users b WHERE b.idUsers = :userID" ),
+@NamedQuery( name = "User.findByIdUsers", query = "SELECT b FROM User b WHERE b.idUsers = :idUsers" ),
 
-@NamedQuery( name = "Users.findByName", query = "SELECT b FROM Users b WHERE b.name = :name" ),
+@NamedQuery( name = "User.findByName", query = "SELECT b FROM User b WHERE b.name = :name" ),
 
-@NamedQuery( name = "Users.createNewUser", query = "INSERT INTO Users(name, password, email) VALUES(:name, :password, :email)")
+// @NamedQuery( name = "User.createNewUser", query = "INSERT INTO User(name, password, email) VALUES(:name, :password, :email)")
 
 })
 
@@ -34,16 +34,20 @@ public class User implements Serializable{
 
 		@Id
 		@Column(name="idUsers")
-		private int userID;
+		@GeneratedValue(strategy=GenerationType.IDENTITY)
+		private long idUsers;
 
 		@Column(name="password")
 		private String password;
 
 		@Column(name="name")
 		private String name;
+		
+		@Column(name="email")
+		private String email;
 
 		//bi-directional many-to-one association to BankAccount
-		@OneToMany
+		@ManyToMany
 		@JoinColumn(name = "idEvents")
 		private List<Event> events;
 		
@@ -57,11 +61,12 @@ public class User implements Serializable{
 		
 		
 
-		public User(String password, String name, List<Event> events) {
+		public User(String password, String name,String email, List<Event> events) {
 			super();
 			this.password = password;
 			this.name = name;
 			this.events = events;
+			this.email = email;
 		}
 
 
@@ -77,12 +82,12 @@ public class User implements Serializable{
 		
 
 		
-		public long getUserID() {
-			return userID;
+		public long getIdUsers() {
+			return idUsers;
 		}
 
-		public void setUserID(int userID) {
-			this.userID = userID;
+		public void setIdUser(long idUser) {
+			this.idUsers = idUser;
 		}
 
 		public String getName() {
@@ -99,6 +104,13 @@ public class User implements Serializable{
 
 		public void setEvents(List<Event> events) {
 			this.events = events;
+		}
+		
+		public void setEmail(String email){
+			this.email=email;
+		}
+		public String getEmail(){
+			return this.email;
 		}
 
 		public Event addEvent(Event event) {
