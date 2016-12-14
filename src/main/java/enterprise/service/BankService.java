@@ -45,5 +45,24 @@ public class BankService {
 		metier.signUp(name, password, email);
 		return "ok";
 	}
+	
+	@WebMethod
+	public String CreateEvent(
+			@WebParam(name = "nameArtist") String nameArtist ,
+			@WebParam(name = "date") String date,
+			@WebParam(name ="category") String category) throws Exception {
 
+		metier.createEvent(nameArtist,date, category);
+		return "ok";
+	}
+
+	@WebMethod
+	public String Reserver(
+			@WebParam(name = "idEvent") long idEvent ,
+			@WebParam(name = "idUser") long idUser,
+			@WebParam(name ="siege") String siege) throws Exception {
+
+		metier.reserverPlace(idEvent,idUser, siege);
+		return "ok";
+	}
 }

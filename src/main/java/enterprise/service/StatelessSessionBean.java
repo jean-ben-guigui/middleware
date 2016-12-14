@@ -55,6 +55,8 @@ import javax.transaction.UserTransaction;
 
 import model.BankAccount;
 import model.BankCustomer;
+import model.Event;
+import model.Reservation;
 import model.User;
 
 @Stateless(name = "BK")
@@ -158,6 +160,32 @@ public class StatelessSessionBean implements StatelessLocal {
 			e.printStackTrace();
 		}
 
+	}
+	@Override
+	public void createEvent(String nameArtist, String date, String category) throws Exception{
+		Event event = new Event(nameArtist, date, category);
+		System.out.println("ouverture transaction");
+		UserTransaction utx = context.getUserTransaction();
+		utx.begin();
+		System.out.println("persist");
+		em.persist(event);
+		utx.commit();
+		System.out.println("fin");
+				
+	}
+	
+	@Override
+	public void reserverPlace(long idEvent, long idUser, String siege) throws Exception{
+		Reservation reservation = new Reservation(idEvent,idUser);
+		reservation.setSiege(siege);
+		System.out.println("ouverture transaction");
+		UserTransaction utx = context.getUserTransaction();
+		utx.begin();
+		System.out.println("persist");
+		em.persist(reservation);
+		utx.commit();
+		System.out.println("fin");
+				
 	}
 
 }

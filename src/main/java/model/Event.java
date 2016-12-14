@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,8 +11,8 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name = "EVENT")
-@NamedQuery(name = "Event.findById", query = "SELECT b FROM Event b WHERE b.idEvent = :idEvent")
+@Table(name = "EVENTS")
+@NamedQuery(name = "Event.findById", query = "SELECT b FROM Event b WHERE b.idEvents = :idEvents")
 
 
 public class Event implements Serializable{
@@ -22,13 +23,15 @@ public class Event implements Serializable{
 
 		@Id
 		@Column(name = "idEvents")
-		private int idEvent;
+		@GeneratedValue(strategy=GenerationType.IDENTITY)
+
+		private long idEvents;
 
 		@Column(name = "artistname")
 		private String artistName;
 
 		@Column(name = "date")
-		private Date date;
+		private String date;
 
 		@Column(name = "category")
 		private String category;
@@ -46,23 +49,27 @@ public class Event implements Serializable{
 		
 		
 
-		public Event(String artistName, Date date, String category, List<User> users) {
+		public Event(String artistName, String date, String category, List<User> users) {
 			super();
 			this.artistName = artistName;
 			this.date = date;
 			this.category = category;
 			this.users = users;
 		}
-
-
-
-		public long getIdEvent() {
-			return idEvent;
+		
+		public Event(String artistName, String date, String category) {
+			super();
+			this.artistName = artistName;
+			this.date = date;
+			this.category = category;
+			this.users = new ArrayList<User>();
 		}
 
-		public void setIdEvent(int idEvent) {
-			this.idEvent = idEvent;
+		public long getIdEvents() {
+			return idEvents;
 		}
+
+
 
 		public String getArtistName() {
 			return artistName;
@@ -72,11 +79,11 @@ public class Event implements Serializable{
 			this.artistName = artistName;
 		}
 
-		public Date getDate() {
+		public String getDate() {
 			return date;
 		}
 
-		public void setDate(Date date) {
+		public void setDate(String date) {
 			this.date = date;
 		}
 

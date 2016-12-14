@@ -14,5 +14,9 @@ public interface StatelessLocal {
 			BigDecimal amount) throws Exception;
 	
 	public void signUp(String name, String password, String email) throws Exception;
+	
+	public void createEvent(String nameArtist, String date, String category) throws Exception;
+	
+	public void reserverPlace(long idEvent, long idUser, String siege) throws Exception;
 
 }
