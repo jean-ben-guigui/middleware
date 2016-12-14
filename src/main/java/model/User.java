@@ -14,7 +14,7 @@ import java.util.List;
 @NamedQueries(
 
 {
-
+ 
 
 @NamedQuery(name="Users.findAll", query="SELECT b FROM User b"),
 
