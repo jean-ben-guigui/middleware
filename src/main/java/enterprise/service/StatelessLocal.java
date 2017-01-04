@@ -1,8 +1,11 @@
 package enterprise.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.ejb.Local;
+
+import model.Event;
 import model.User;
 
 @Local
@@ -17,6 +20,8 @@ public interface StatelessLocal {
 	
 	public void createEvent(String nameArtist, String date, String category) throws Exception;
 	
-	public void reserverPlace(long idEvent, long idUser, String siege) throws Exception;
+	public void reserverPlace(long idEvent, long idUser, String siege,String cat) throws Exception;
+	
+	public List<Event> getEvents();
 
 }

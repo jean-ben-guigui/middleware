@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +13,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "EVENTS")
-@NamedQuery(name = "Event.findById", query = "SELECT b FROM Event b WHERE b.idEvents = :idEvents")
-
+@NamedQueries({
+@NamedQuery(name = "Event.findById", query = "SELECT b FROM Event b WHERE b.idEvents = :idEvents"),
+@NamedQuery(name = "Event.getAll", query = "SELECT b FROM Event b WHERE b.date > CURRENT_TIMESTAMP")
+})
 
 public class Event implements Serializable{
 	
@@ -31,7 +34,7 @@ public class Event implements Serializable{
 		private String artistName;
 
 		@Column(name = "date")
-		private String date;
+		private Timestamp date;
 
 		@Column(name = "category")
 		private String category;
@@ -49,7 +52,7 @@ public class Event implements Serializable{
 		
 		
 
-		public Event(String artistName, String date, String category, List<User> users) {
+		public Event(String artistName, Timestamp date, String category, List<User> users) {
 			super();
 			this.artistName = artistName;
 			this.date = date;
@@ -57,7 +60,7 @@ public class Event implements Serializable{
 			this.users = users;
 		}
 		
-		public Event(String artistName, String date, String category) {
+		public Event(String artistName, Timestamp date, String category) {
 			super();
 			this.artistName = artistName;
 			this.date = date;
@@ -79,11 +82,11 @@ public class Event implements Serializable{
 			this.artistName = artistName;
 		}
 
-		public String getDate() {
+		public Timestamp getDate() {
 			return date;
 		}
 
-		public void setDate(String date) {
+		public void setDate(Timestamp date) {
 			this.date = date;
 		}
 
@@ -105,11 +108,10 @@ public class Event implements Serializable{
 
 		
 
-		/*@Override
-		public String toString() {
-			return "Event [event ID = " + idEvent + ", artist name : " + artistName + ", Date : " + balance
-					+ ", bankAcctTypePk=" + bankAcctTypePk + ", bankCustomer=" + bankCustomer + "]";
-		}*/
+		@Override
+		public String toString(){
+			return this.artistName +" "+this.date+" "+this.category;
+		}
 
 		/*@Override
 		public int hashCode() {

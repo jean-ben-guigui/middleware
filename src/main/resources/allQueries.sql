@@ -57,12 +57,13 @@ CREATE TABLE Users(
 	name varchar(200) not null,
 	password varchar(200) not null,
 	email varchar(200) not null,
+	type varchar(10),
 	primary key(idUsers))
 
 CREATE TABLE Events(
 	idEvents int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	artistname varchar(200) not null,
-	date varchar(200) not null,
+	date TIMESTAMP not null,
 	category varchar(200) not null,
 	primary key(idEvents))
 
@@ -71,8 +72,8 @@ CREATE TABLE reservation(
 	idevent int not null,
 	iduser int not null,
 	siege varchar(200),
+	category varchar(10),
 	state varchar(200) not null,
 	primary key(idReservation),
 	constraint ID_EVENTS_MATCH FOREIGN KEY(idevent) REFERENCES Events(idEvents),
 	constraint ID_USERS_MATCH FOREIGN KEY(iduser) REFERENCES Users(idUsers))
-

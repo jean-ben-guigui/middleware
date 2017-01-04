@@ -41,6 +41,11 @@
 package enterprise.service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -52,6 +57,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
+
+import org.glassfish.grizzly.http.util.TimeStamp;
 
 import model.BankAccount;
 import model.BankCustomer;
@@ -163,7 +170,12 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	@Override
 	public void createEvent(String nameArtist, String date, String category) throws Exception{
-		Event event = new Event(nameArtist, date, category);
+		// convertion de la date de string a timestamp
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+	    Date parsedDate = dateFormat.parse(date);
+	    Timestamp timestamp = new Timestamp(parsedDate.getTime());
+		
+		Event event = new Event(nameArtist, timestamp, category);
 		System.out.println("ouverture transaction");
 		UserTransaction utx = context.getUserTransaction();
 		utx.begin();
@@ -175,9 +187,10 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	@Override
-	public void reserverPlace(long idEvent, long idUser, String siege) throws Exception{
+	public void reserverPlace(long idEvent, long idUser, String siege, String cat) throws Exception{
 		Reservation reservation = new Reservation(idEvent,idUser);
 		reservation.setSiege(siege);
+		reservation.setCategory(cat);
 		System.out.println("ouverture transaction");
 		UserTransaction utx = context.getUserTransaction();
 		utx.begin();
@@ -186,6 +199,20 @@ public class StatelessSessionBean implements StatelessLocal {
 		utx.commit();
 		System.out.println("fin");
 				
+	}
+	
+	@Override
+	public List<Event> getEvents(){
+		// Method pour obtenir la liste des events
+		Query query = em.createNamedQuery("Event.getAll");
+		List<Event> events =  query.getResultList();
+		String res = "";
+		for(Event e: events){
+			res+=e.toString()+"\n";
+		}
+
+		return events;
+		
 	}
 
 }

@@ -46,6 +46,9 @@ public class User implements Serializable{
 		@Column(name="email")
 		private String email;
 
+		@Column(name="type")
+		private String type;
+		
 		//bi-directional many-to-one association to BankAccount
 		@ManyToMany
 		@JoinColumn(name = "idEvents")
@@ -111,6 +114,14 @@ public class User implements Serializable{
 		}
 		public String getEmail(){
 			return this.email;
+		}
+		
+		public void setType(String type){
+			this.type = type;
+		}
+		
+		public String getType(){
+			return this.type;
 		}
 
 		public Event addEvent(Event event) {

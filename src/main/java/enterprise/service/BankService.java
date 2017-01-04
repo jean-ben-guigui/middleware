@@ -1,6 +1,7 @@
 package enterprise.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -8,7 +9,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-import model.BankCustomer;
+import model.Event;
 
 @Stateless
 @WebService
@@ -60,9 +61,28 @@ public class BankService {
 	public String Reserver(
 			@WebParam(name = "idEvent") long idEvent ,
 			@WebParam(name = "idUser") long idUser,
-			@WebParam(name ="siege") String siege) throws Exception {
+			@WebParam(name ="siege") String siege,
+			@WebParam(name ="category") String cat) throws Exception {
 
-		metier.reserverPlace(idEvent,idUser, siege);
+		metier.reserverPlace(idEvent,idUser, siege,cat);
 		return "ok";
+	}
+	
+	@WebMethod
+	public String getEventsWeb(){
+		
+		List<Event> events =  metier.getEvents();
+		String res = "";
+		for(Event e: events){
+			res+=e.toString()+"\n";
+		}
+
+		return res;
+		
+	}
+	
+	public List<Event> getEvents(){
+		
+		return metier.getEvents();
 	}
 }
