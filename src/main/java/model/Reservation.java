@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -23,7 +25,9 @@ import javax.persistence.Table;
 @NamedQuery(name = "Reservation.findByReservation", query = "SELECT b FROM Reservation b WHERE b.idReservation = :idReservation"),
 @NamedQuery(name = "Reservation.findByUser", query = "SELECT b FROM Reservation b WHERE b.idUser = :idUser"),
 @NamedQuery(name = "Reservation.getCat", query = "SELECT Count(b) FROM Reservation b WHERE b.category = :Cat AND b.idEvent = :idEvent"),
-@NamedQuery(name = "Reservation.getSiege", query = "SELECT b FROM Reservation b WHERE b.idEvent = :idEvent AND b.category = :cat")
+@NamedQuery(name = "Reservation.getSiege", query = "SELECT b.siege FROM Reservation b WHERE b.idEvent = :idEvent AND b.category = :cat"),
+@NamedQuery(name = "Reservation.getNbPlace", query = "SELECT Count(b) FROM Reservation b WHERE b.idEvent = :idEvent AND b.idUser = :idUser"),
+@NamedQuery(name = "Reservation.checkPlace", query = "SELECT Count(b) FROM Reservation b WHERE b.idEvent = :idEvent AND b.siege = :siege AND b.category = :cat")
 })
 public class Reservation {
 
@@ -41,13 +45,16 @@ public class Reservation {
 	private long idUser;
 
 	@Column(name = "Siege")
-	private String siege;
+	private long siege;
 	
 	@Column(name ="Category")
 	private String category;
 
 	@Column(name = "State")
 	private String state;
+	
+	@Column(name = "DateRes")
+	private Timestamp dateRes;
 	
 
 	
@@ -62,9 +69,10 @@ public class Reservation {
 		super();
 		this.idEvent = idEvent;
 		this.idUser = idUser;
-		this.siege ="0";
+		this.siege =0;
 		this.category="z";
-		this.state ="null";
+		this.state ="pending";
+		this.dateRes = new Timestamp(System.currentTimeMillis());
 	}
 
 
@@ -90,11 +98,11 @@ public class Reservation {
 		this.idUser = idUser;
 	}
 
-	public String getSiege() {
+	public long getSiege() {
 		return siege;
 	}
 
-	public void setSiege(String siege) {
+	public void setSiege(long siege) {
 		this.siege = siege;
 	}
 	public void setCategory(String cat){

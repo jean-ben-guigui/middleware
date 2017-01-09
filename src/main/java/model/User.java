@@ -24,7 +24,9 @@ import java.util.List;
 
 @NamedQuery( name = "User.findByName", query = "SELECT b FROM User b WHERE b.name = :name" ),
 
-// @NamedQuery( name = "User.createNewUser", query = "INSERT INTO User(name, password, email) VALUES(:name, :password, :email)")
+@NamedQuery( name = "User.logIn", query = "SELECT b FROM User b WHERE b.email = :email AND b.password = :password")
+
+
 
 })
 

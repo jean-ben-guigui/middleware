@@ -192,10 +192,32 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	@Override
-	public void reserverPlace(long idEvent, long idUser, String siege, String cat) throws Exception{
+	public boolean reserverPlace(long idEvent, long idUser, long siege, String cat) throws Exception{
 		Reservation reservation = new Reservation(idEvent,idUser);
 		reservation.setSiege(siege);
 		reservation.setCategory(cat);
+		// reservation.setState(String.valueOf(System.currentTimeMillis()));
+		
+		//On regarde si l'utilisateur a deja 4 places
+		Query query = em.createNamedQuery("Reservation.getNbPlace");
+		query.setParameter("idUser", idUser);
+		query.setParameter("idEvent",idEvent);
+		long i = (long)query.getSingleResult();
+		System.out.println(i);
+		if( i > 3){
+			return false;
+		}
+		
+		//On regarde si la place est libre
+		Query querybis = em.createNamedQuery("Reservation.checkPlace");
+		querybis.setParameter("idEvent", idUser);
+		querybis.setParameter("siege", siege);
+		querybis.setParameter("cat", cat);
+		long j = (long)querybis.getSingleResult();
+		if( j > 0){
+			return false;
+		}
+		
 		System.out.println("ouverture transaction");
 		UserTransaction utx = context.getUserTransaction();
 		utx.begin();
@@ -203,6 +225,7 @@ public class StatelessSessionBean implements StatelessLocal {
 		em.persist(reservation);
 		utx.commit();
 		System.out.println("fin");
+		return true;
 				
 	}
 	
@@ -240,7 +263,87 @@ public class StatelessSessionBean implements StatelessLocal {
 		Query query = em.createNamedQuery("Reservation.getSiege");
 		query.setParameter("idEvent", idEvent);
 		query.setParameter("cat", Character.toString(category) );
-		return null;
+		List<Long> l = query.getResultList();
+		Integer[] nbSiege = {25,45,100,500};
+		List<Integer> res = new ArrayList();
+		switch (category) {
+		case 'A':
+			for (int i =1; i < 26;i++) {
+				boolean aux = false;
+				for(int j=0; j < l.size();j++){
+					if(l.get(j) == i){
+						aux = true;
+					}
+				}
+				if(!aux){
+					res.add(i);
+				}
+	
+
+			}
+			break;
+		
+		case 'B':
+			for (int i =1; i < 46;i++) {
+				boolean aux = false;
+				for(int j=0; j < l.size();j++){
+					if(l.get(j) == i){
+						aux = true;
+					}
+				}
+				if(!aux){
+					res.add(i);
+				}
+	
+			}
+			break;
+		
+		case 'C':
+			for (int i =1; i < 101;i++) {
+				boolean aux = false;
+				for(int j=0; j < l.size();j++){
+					if(l.get(j) == i){
+						aux = true;
+					}
+				}
+				if(!aux){
+					res.add(i);
+				}
+	
+			}
+			break;
+			
+		case 'D':
+			for (int i =1; i < 501;i++) {
+				boolean aux = false;
+				for(int j=0; j < l.size();j++){
+					if(l.get(j) == i){
+						aux = true;
+					}
+				}
+				if(!aux){
+					res.add(i);
+				}
+	
+			}
+			break;
+
+		default:
+			break;
+		}
+		return res;
+	}
+	
+	@Override
+	public boolean logIn(String email, String password){
+		Query query = em.createNamedQuery("User.logIn");
+		query.setParameter("email", email);
+		query.setParameter("password", password );
+		List<User> l = query.getResultList();
+		if( l.size() > 0){
+			return true;
+		}
+		return false;
 	}
 
 }

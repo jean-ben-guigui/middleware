@@ -61,11 +61,14 @@ public class BankService {
 	public String Reserver(
 			@WebParam(name = "idEvent") long idEvent ,
 			@WebParam(name = "idUser") long idUser,
-			@WebParam(name ="siege") String siege,
+			@WebParam(name ="siege") long siege,
 			@WebParam(name ="category") String cat) throws Exception {
 
-		metier.reserverPlace(idEvent,idUser, siege,cat);
+		if(metier.reserverPlace(idEvent, idUser, siege,cat)){
 		return "ok";
+		}else{
+			return "not ok";
+		}
 	}
 	
 	@WebMethod
@@ -89,8 +92,21 @@ public class BankService {
 	
 	
 	@WebMethod
-	public String getSiege(int idEvent, char category){
-		return metier.getSiege(idEvent, category).toString();
+	public String getSiege(int idEvent, String category){
+		List<Integer> l = metier.getSiege(idEvent, category.toCharArray()[0]);
+		String s = "";
+		for(int i =0; i < l.size();i++){
+			s += l.get(i) +" ";
+		}
+		return s;
+	}
+	
+	@WebMethod
+	public String logIn(String email, String password){
+		if(metier.logIn(email,password)){
+			return "ok";
+		}
+		return "not ok";
 	}
 	
 	public List<Event> getEvents(){

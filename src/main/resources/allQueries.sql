@@ -71,9 +71,10 @@ CREATE TABLE reservation(
 	idReservation int not null GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
 	idevent int not null,
 	iduser int not null,
-	siege varchar(200),
-	category varchar(10),
+	siege int not null,
+	category varchar(10) not null,
 	state varchar(200) not null,
+	dateRes TIMESTAMP,
 	primary key(idReservation),
 	constraint ID_EVENTS_MATCH FOREIGN KEY(idevent) REFERENCES Events(idEvents),
 	constraint ID_USERS_MATCH FOREIGN KEY(iduser) REFERENCES Users(idUsers))

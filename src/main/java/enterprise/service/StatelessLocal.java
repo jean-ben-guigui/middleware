@@ -22,12 +22,14 @@ public interface StatelessLocal {
 	
 	public void createEvent(String nameArtist, String date, String category) throws Exception;
 	
-	public void reserverPlace(long idEvent, long idUser, String siege,String cat) throws Exception;
+	public boolean reserverPlace(long idEvent, long idUser, long siege,String cat) throws Exception;
 	
 	public List<Event> getEvents();
 	
 	public HashMap<Character,Integer> getCategories(int idEvent);
 	
 	public List<Integer> getSiege(int idEvent, char category);
+	
+	public boolean logIn(String email, String password);
 
 }
