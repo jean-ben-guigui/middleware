@@ -38,6 +38,8 @@
  * holder.
  */
 
+
+
 package enterprise.service;
 
 import java.math.BigDecimal;
@@ -45,6 +47,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -65,6 +68,8 @@ import model.BankCustomer;
 import model.Event;
 import model.Reservation;
 import model.User;
+
+import static java.lang.Math.toIntExact;
 
 @Stateless(name = "BK")
 @TransactionManagement(TransactionManagementType.BEAN)
@@ -213,6 +218,29 @@ public class StatelessSessionBean implements StatelessLocal {
 
 		return events;
 		
+	}
+	
+	@Override
+	public HashMap<Character,Integer> getCategories(int idEvent){
+		Query query = em.createNamedQuery("Reservation.getCat");
+		char[] cat = {'A','B','C','D'};
+		HashMap<Character, Integer> map = new HashMap<>();
+		for(char c : cat){
+			query.setParameter("Cat", Character.toString(c));
+			query.setParameter("idEvent", idEvent);
+			long i =  (long) query.getSingleResult();
+			map.put(c, toIntExact(i));
+		}
+		
+		return map;
+	}
+	
+	@Override
+	public List<Integer> getSiege(int idEvent,char category){
+		Query query = em.createNamedQuery("Reservation.getSiege");
+		query.setParameter("idEvent", idEvent);
+		query.setParameter("cat", Character.toString(category) );
+		return null;
 	}
 
 }

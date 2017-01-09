@@ -1,6 +1,8 @@
 package enterprise.service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -23,5 +25,9 @@ public interface StatelessLocal {
 	public void reserverPlace(long idEvent, long idUser, String siege,String cat) throws Exception;
 	
 	public List<Event> getEvents();
+	
+	public HashMap<Character,Integer> getCategories(int idEvent);
+	
+	public List<Integer> getSiege(int idEvent, char category);
 
 }

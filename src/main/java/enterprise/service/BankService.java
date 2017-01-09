@@ -81,8 +81,22 @@ public class BankService {
 		
 	}
 	
+	
+	@WebMethod
+	public String getCategories(int idEvent){
+		return metier.getCategories(idEvent).toString();
+	}
+	
+	
+	@WebMethod
+	public String getSiege(int idEvent, char category){
+		return metier.getSiege(idEvent, category).toString();
+	}
+	
 	public List<Event> getEvents(){
 		
 		return metier.getEvents();
 	}
+	
+	
 }
