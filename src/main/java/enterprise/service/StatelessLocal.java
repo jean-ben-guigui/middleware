@@ -19,7 +19,7 @@ public interface StatelessLocal {
 	public String transferFunds( String fromAccountNo, String toAccountNo,
 			BigDecimal amount) throws Exception;
 	
-	public void signUp(String name, String password, String email) throws Exception;
+	public boolean signUp(String name, String password, String email) throws Exception;
 	
 	public void createEvent(String nameArtist, String date, String category) throws Exception;
 	

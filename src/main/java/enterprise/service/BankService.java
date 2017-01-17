@@ -43,8 +43,9 @@ public class BankService {
 			@WebParam(name = "password") String password,
 			@WebParam(name ="email") String email) throws Exception {
 
-		metier.signUp(name, password, email);
+		if(metier.signUp(name, password, email)){
 		return "ok";
+		}else{return "error";}
 	}
 	
 	@WebMethod

@@ -150,7 +150,8 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	@Override
-	public void signUp(String name, String password, String email)throws Exception {
+	public boolean signUp(String name, String password, String email)throws Exception {
+		
 		try {
 
 			User user = new User();
@@ -164,13 +165,14 @@ public class StatelessSessionBean implements StatelessLocal {
 			em.persist(user);
 			utx.commit();
 			System.out.println("fin");
-		
+			return true;
 
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+		return false;
 
 	}
 	@Override
@@ -417,7 +419,21 @@ public class StatelessSessionBean implements StatelessLocal {
 	public String seeBookedPlace(int idAdmin, int idEvent){
 		String result = "";
 		Query query = em.createNamedQuery("Reservation.findByEventPaye");
-		query.setParameter(", arg1)
+		query.setParameter("idEvent", idEvent);
+		List<Reservation> resList = query.getResultList();
+		int[] nbParCat = {0,0,0,0};
+		for(Reservation res: resList){
+			String cat = res.getCategory();
+			switch(cat){
+			case "A" : nbParCat[0]++; break;
+			case "B" : nbParCat[1]++; break;
+			case "C" : nbParCat[2]++; break;
+			case "D" : nbParCat[3]++; break;
+				
+			}
+
+		}
+		result += "A :"+nbParCat[0]+"/25"+" B :"+nbParCat[1]+"/45"+"C :"+nbParCat[2]+"/100"+"D :"+nbParCat[3]+"/500";
 		return result;
 	}
 }
