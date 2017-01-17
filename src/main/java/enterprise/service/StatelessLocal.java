@@ -36,4 +36,6 @@ public interface StatelessLocal {
 	public boolean payer(int idReservation);
 	
 	public String seeEarning(int idAdmin);
+	
+	public String seeBookedPlace(int idAdmin, int idEvent);
 }

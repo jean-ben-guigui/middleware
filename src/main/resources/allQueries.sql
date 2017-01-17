@@ -78,3 +78,9 @@ CREATE TABLE reservation(
 	primary key(idReservation),
 	constraint ID_EVENTS_MATCH FOREIGN KEY(idevent) REFERENCES Events(idEvents),
 	constraint ID_USERS_MATCH FOREIGN KEY(iduser) REFERENCES Users(idUsers))
+
+-- DROP TRIGGER deletePending
+
+CREATE TRIGGER deletePending AFTER INSERT ON Reservation
+	FOR EACH ROW MODE DB2SQL
+	DELETE FROM Reservation WHERE State = 'pending' AND {fn TIMESTAMPDIFF( SQL_TSI_MINUTE, CURRENT_TIMESTAMP, DATERES)} > 5

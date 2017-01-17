@@ -128,5 +128,10 @@ public class BankService {
 		return metier.seeEarning(idAdmin);
 	}
 	
+	@WebMethod
+	public String seeBookedSeat(int idAdmin, int idEvent){
+		return metier.seeBookedPlace(idAdmin, idEvent);
+	}
+	
 	
 }

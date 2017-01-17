@@ -392,16 +392,32 @@ public class StatelessSessionBean implements StatelessLocal {
 						}
 					}
 					int prixEvent =0;
-					int coefPlace =0;
+					double coefPlace =0;
 					switch(catEvent){
 					case "C1" : prixEvent = 5;break;
 					case "C2" : prixEvent = 10;break;
 					case "C3" : prixEvent = 20;break;
 					case "C4" : prixEvent = 50;break;
 					}
+					switch(cat){
+					case "A" :coefPlace = 3;break;
+					case "B" :coefPlace = 2.5;break;
+					case "C" :coefPlace = 2;break;
+					case "D" :coefPlace = 1;break;
+					}
+					somme += prixEvent*coefPlace;
 				}
+				return "Prix total:"+somme;
 			}
 		}
 		return "User non enregistrer ou n'ayant pas des droits suffisants";
+	}
+	
+	@Override
+	public String seeBookedPlace(int idAdmin, int idEvent){
+		String result = "";
+		Query query = em.createNamedQuery("Reservation.findByEventPaye");
+		query.setParameter(", arg1)
+		return result;
 	}
 }
