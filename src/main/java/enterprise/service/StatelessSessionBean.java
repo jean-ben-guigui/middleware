@@ -59,6 +59,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.glassfish.grizzly.http.util.TimeStamp;
@@ -147,12 +152,7 @@ public class StatelessSessionBean implements StatelessLocal {
 	@Override
 	public void signUp(String name, String password, String email)throws Exception {
 		try {
-			/*Query query = em.createNamedQuery("Users.createNewUser");
-			query.setParameter("name", name);
-			query.setParameter("password", password);
-			query.setParameter("email", email);
-			int res = query.executeUpdate();
-			System.out.println("res ="+res);*/
+
 			User user = new User();
 			user.setName(name);
 			user.setPassword(password);
@@ -346,4 +346,62 @@ public class StatelessSessionBean implements StatelessLocal {
 		return false;
 	}
 
+	
+	@Override
+	public boolean payer(int idReservation){
+		Query query = em.createNamedQuery("Reservation.findByID");
+		query.setParameter("idReservation", idReservation );
+		Reservation res = (Reservation) query.getSingleResult();
+		if(res != null){
+			res.setState("paye");
+			UserTransaction utx = context.getUserTransaction();
+			try {
+				utx.begin();
+				em.merge(res);
+				utx.commit();
+			} catch (NotSupportedException | SystemException | SecurityException | IllegalStateException | RollbackException | HeuristicMixedException | HeuristicRollbackException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public String seeEarning(int idAdmin){
+		Query query = em.createNamedQuery("User.findByIdUsers");
+		query.setParameter("idUsers", idAdmin );
+		User user = (User) query.getSingleResult();
+		if(user != null){
+			if(user.getType().equals("admin")){
+				Query querybis = em.createNamedQuery("Reservation.getAllPaid");
+				List<Reservation> resList = querybis.getResultList();
+				Query querytris = em.createNamedQuery("Event.getAll");
+				List<Event> eventList = querytris.getResultList();
+				int somme = 0;
+				for(Reservation r : resList){
+					String cat =r.getCategory();
+					long idEvent = r.getIdEvent();
+					String catEvent ="";
+					for(int i =0; i < eventList.size();i++){
+						if(eventList.get(i).getIdEvents() == idEvent){
+							catEvent = eventList.get(i).getCategory();
+							break;
+						}
+					}
+					int prixEvent =0;
+					int coefPlace =0;
+					switch(catEvent){
+					case "C1" : prixEvent = 5;break;
+					case "C2" : prixEvent = 10;break;
+					case "C3" : prixEvent = 20;break;
+					case "C4" : prixEvent = 50;break;
+					}
+				}
+			}
+		}
+		return "User non enregistrer ou n'ayant pas des droits suffisants";
+	}
 }

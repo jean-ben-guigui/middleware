@@ -114,5 +114,19 @@ public class BankService {
 		return metier.getEvents();
 	}
 	
+	@WebMethod
+	public String payer(int idReservation){
+	if(metier.payer(idReservation)){
+		return "true";
+	}else{
+		return "false";
+	}
+	}
+	
+	@WebMethod
+	public String seeEarning(int idAdmin){
+		return metier.seeEarning(idAdmin);
+	}
+	
 	
 }

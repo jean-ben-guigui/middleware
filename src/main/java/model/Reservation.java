@@ -27,6 +27,8 @@ import javax.persistence.Table;
 @NamedQuery(name = "Reservation.getCat", query = "SELECT Count(b) FROM Reservation b WHERE b.category = :Cat AND b.idEvent = :idEvent"),
 @NamedQuery(name = "Reservation.getSiege", query = "SELECT b.siege FROM Reservation b WHERE b.idEvent = :idEvent AND b.category = :cat"),
 @NamedQuery(name = "Reservation.getNbPlace", query = "SELECT Count(b) FROM Reservation b WHERE b.idEvent = :idEvent AND b.idUser = :idUser"),
+@NamedQuery(name = "Reservation.findByID", query = "SELECT b FROM Reservation b WHERE b.idReservation = :idReservation"),
+@NamedQuery(name = "Reservation.getAllPaid", query = "SELECT b FROM Reservation b WHERE b.state = \"paye \" "),
 @NamedQuery(name = "Reservation.checkPlace", query = "SELECT Count(b) FROM Reservation b WHERE b.idEvent = :idEvent AND b.siege = :siege AND b.category = :cat")
 })
 public class Reservation {

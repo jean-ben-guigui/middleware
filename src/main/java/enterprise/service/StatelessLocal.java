@@ -6,11 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import model.Event;
 import model.User;
 
-@Local
+@Remote
 public interface StatelessLocal {
 
 	public User getUser(String user);
@@ -32,4 +33,7 @@ public interface StatelessLocal {
 	
 	public boolean logIn(String email, String password);
 
+	public boolean payer(int idReservation);
+	
+	public String seeEarning(int idAdmin);
 }
