@@ -16,8 +16,6 @@ public interface StatelessLocal {
 
 	public User getUser(String user);
 
-	public String transferFunds( String fromAccountNo, String toAccountNo,
-			BigDecimal amount) throws Exception;
 	
 	public boolean signUp(String name, String password, String email) throws Exception;
 	

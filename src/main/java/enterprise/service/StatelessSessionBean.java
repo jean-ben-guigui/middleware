@@ -68,8 +68,6 @@ import javax.transaction.UserTransaction;
 
 import org.glassfish.grizzly.http.util.TimeStamp;
 
-import model.BankAccount;
-import model.BankCustomer;
 import model.Event;
 import model.Reservation;
 import model.User;
@@ -96,59 +94,6 @@ public class StatelessSessionBean implements StatelessLocal {
 		return userResult;
 	}
 
-	@Override
-	public String transferFunds(String fromAccountNo, String toAccountNo, BigDecimal amount) throws Exception {
-		try {
-			UserTransaction utx = context.getUserTransaction();
-
-			utx.begin();
-			// Check for amount greater than 0
-			// if ( amount.doubleValue() <= 0 )
-			// {
-			// throw new Exception( "Invalid transfer amount" );
-			// }
-
-			// Get source bank account entity
-			Query query = em.createNamedQuery("BankAccountEntity.findByAccountNo");
-			query.setParameter("accountNo", fromAccountNo);
-			BankAccount fromBankAccountEntity = null;
-			fromBankAccountEntity = (BankAccount) query.getSingleResult();
-			System.out.println("--- THe first account is --- " + fromBankAccountEntity.getAccountNo());
-
-			query.setParameter("accountNo", toAccountNo);
-			BankAccount toBankAccountEntity = (BankAccount) query.getSingleResult();
-			System.out.println("--- THe secound account is --- " + toBankAccountEntity.getAccountNo());
-			// Check if there are enough funds in the source account for the
-			// transfer
-			BigDecimal sourceBalance = fromBankAccountEntity.getBalance();
-			System.out.println("Balance source = " + sourceBalance);
-			System.out.println("Amount " + amount);
-			BigDecimal bankCharge = new BigDecimal(2);
-
-			// Perform the transfer
-			sourceBalance = sourceBalance.subtract(amount).subtract(bankCharge);
-			fromBankAccountEntity.setBalance(sourceBalance);
-			System.out.println(fromBankAccountEntity);
-			BigDecimal targetBalance = toBankAccountEntity.getBalance();
-			toBankAccountEntity.setBalance(targetBalance.add(amount));
-			System.out.println(toBankAccountEntity);
-			System.out.println("Transfer Completed");
-			// Update all the accounts
-			// em.merge(toBankAccountEntity);
-			//
-			// em.merge(fromBankAccountEntity);
-			utx.commit();
-			return "Done - Balances after operation \r\n " + fromBankAccountEntity.getAccountNo() + ": "
-					+ fromBankAccountEntity.getBalance() + " \r\n" + toBankAccountEntity.getAccountNo() + ": "
-					+ toBankAccountEntity.getBalance();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			return e.getLocalizedMessage();
-		}
-
-	}
-	
 	@Override
 	public boolean signUp(String name, String password, String email)throws Exception {
 		
