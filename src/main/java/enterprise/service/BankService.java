@@ -65,13 +65,10 @@ public class BankService {
 			@WebParam(name ="siege") long siege,
 			@WebParam(name ="category") String cat) throws Exception {
 
-		if(metier.reserverPlace(idEvent, idUser, siege,cat) != -1){
-		return "ok";
-		}else{
-			return "not ok";
-		}
+		return "Id:"+metier.reserverPlace(idEvent, idUser, siege,cat);
+
 	}
-	
+
 	@WebMethod
 	public String getEventsWeb(){
 		

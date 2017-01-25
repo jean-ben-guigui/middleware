@@ -228,10 +228,10 @@ public class StatelessSessionBean implements StatelessLocal {
 		utx.commit();
 		System.out.println("fin");
 		Query queryter = em.createNamedQuery("Reservation.findByEventbySiegebycat");
-		querybis.setParameter("idEvent", idEvent);
-		querybis.setParameter("siege", siege);
-		querybis.setParameter("cat", cat);
-		long k = (long)querybis.getSingleResult();
+		queryter.setParameter("idEvent", idEvent);
+		queryter.setParameter("siege", siege);
+		queryter.setParameter("cat", cat);
+		long k = (long)queryter.getSingleResult();
 		
 		return k;
 				
