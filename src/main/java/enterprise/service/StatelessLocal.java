@@ -23,7 +23,7 @@ public interface StatelessLocal {
 	
 	public void createEvent(String nameArtist, String date, String category) throws Exception;
 	
-	public boolean reserverPlace(long idEvent, long idUser, long siege,String cat) throws Exception;
+	public long reserverPlace(long idEvent, long idUser, long siege,String cat) throws Exception;
 	
 	public List<Event> getEvents();
 	
@@ -31,7 +31,7 @@ public interface StatelessLocal {
 	
 	public List<Integer> getSiege(int idEvent, char category);
 	
-	public boolean logIn(String email, String password);
+	public long logIn(String email, String password);
 
 	public boolean payer(int idReservation);
 	

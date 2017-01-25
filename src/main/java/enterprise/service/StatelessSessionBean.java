@@ -194,7 +194,7 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	@Override
-	public boolean reserverPlace(long idEvent, long idUser, long siege, String cat) throws Exception{
+	public long reserverPlace(long idEvent, long idUser, long siege, String cat) throws Exception{
 		Reservation reservation = new Reservation(idEvent,idUser);
 		reservation.setSiege(siege);
 		reservation.setCategory(cat);
@@ -207,7 +207,7 @@ public class StatelessSessionBean implements StatelessLocal {
 		long i = (long)query.getSingleResult();
 		System.out.println(i);
 		if( i > 3){
-			return false;
+			return -1;
 		}
 		
 		//On regarde si la place est libre
@@ -217,7 +217,7 @@ public class StatelessSessionBean implements StatelessLocal {
 		querybis.setParameter("cat", cat);
 		long j = (long)querybis.getSingleResult();
 		if( j > 0){
-			return false;
+			return -1;
 		}
 		
 		System.out.println("ouverture transaction");
@@ -227,7 +227,13 @@ public class StatelessSessionBean implements StatelessLocal {
 		em.persist(reservation);
 		utx.commit();
 		System.out.println("fin");
-		return true;
+		Query queryter = em.createNamedQuery("Reservation.findByEventbySiegebycat");
+		querybis.setParameter("idEvent", idEvent);
+		querybis.setParameter("siege", siege);
+		querybis.setParameter("cat", cat);
+		long k = (long)querybis.getSingleResult();
+		
+		return k;
 				
 	}
 	
@@ -336,16 +342,19 @@ public class StatelessSessionBean implements StatelessLocal {
 		return res;
 	}
 	
+	/**
+	 * Return the id if it worked correctly, -1 if not
+	 */
 	@Override
-	public boolean logIn(String email, String password){
+	public long logIn(String email, String password){
 		Query query = em.createNamedQuery("User.logIn");
 		query.setParameter("email", email);
 		query.setParameter("password", password );
 		List<User> l = query.getResultList();
 		if( l.size() > 0){
-			return true;
+			return l.get(0).getIdUsers();
 		}
-		return false;
+		return -1;
 	}
 
 	

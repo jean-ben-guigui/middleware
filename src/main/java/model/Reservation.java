@@ -22,6 +22,7 @@ import javax.persistence.Table;
 @Table(name = "RESERVATION")
 @NamedQueries({
 @NamedQuery(name = "Reservation.findByEvent", query = "SELECT b FROM Reservation b WHERE b.idEvent = :idEvent"),
+@NamedQuery(name = "Reservation.findByEventbySiegebycat", query = "SELECT b FROM Reservation b WHERE b.idEvent = :idEvent AND b.siege = :siege AND b.category = :cat"),
 @NamedQuery(name = "Reservation.findByEventPaye", query = "SELECT b FROM Reservation b WHERE b.idEvent = :idEvent AND b.state = \"paye\""),
 @NamedQuery(name = "Reservation.findByReservation", query = "SELECT b FROM Reservation b WHERE b.idReservation = :idReservation"),
 @NamedQuery(name = "Reservation.findByUser", query = "SELECT b FROM Reservation b WHERE b.idUser = :idUser"),

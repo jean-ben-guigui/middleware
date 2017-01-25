@@ -65,7 +65,7 @@ public class BankService {
 			@WebParam(name ="siege") long siege,
 			@WebParam(name ="category") String cat) throws Exception {
 
-		if(metier.reserverPlace(idEvent, idUser, siege,cat)){
+		if(metier.reserverPlace(idEvent, idUser, siege,cat) != -1){
 		return "ok";
 		}else{
 			return "not ok";
@@ -104,7 +104,7 @@ public class BankService {
 	
 	@WebMethod
 	public String logIn(String email, String password){
-		if(metier.logIn(email,password)){
+		if(metier.logIn(email,password) != -1){
 			return "ok";
 		}
 		return "not ok";
