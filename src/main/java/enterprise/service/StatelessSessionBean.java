@@ -87,7 +87,12 @@ public class StatelessSessionBean implements StatelessLocal {
 	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
 	private EntityManager em;
 
-
+	/**
+     * Sert à trouver un user par son nom 
+     *  
+     * @param user  le nom du user qu'on souhaite trouver
+     * @return le user correspondant au nom
+     */
 	@Override
 	public User getUser(String user) {
 
@@ -99,6 +104,15 @@ public class StatelessSessionBean implements StatelessLocal {
 		return userResult;
 	}
 
+	/**
+     * Sert à inscrire un nouvel utilisateur
+     *  
+     * @param name le nom du user
+     * @param password le mot de passe du user
+     * @param email l'email du user
+     * 
+     * @return true si l'inscription a pu se faire, false sinon
+     */
 	@Override
 	public boolean signUp(String name, String password, String email)throws Exception {
 		
@@ -125,6 +139,15 @@ public class StatelessSessionBean implements StatelessLocal {
 		return false;
 
 	}
+	
+	/**
+     * Sert à créer un évènement  
+     *  
+     * @param nameArtist le nom de l'artiste
+     * @param date la date de lévènement
+     * @param category categoy de l'évènement C1, C2 ...
+     * 
+     */
 	@Override
 	public void createEvent(String nameArtist, String date, String category) throws Exception{
 		// convertion de la date de string a timestamp
@@ -143,6 +166,16 @@ public class StatelessSessionBean implements StatelessLocal {
 				
 	}
 	
+	/**
+     * Sert à réserver une place pour un évènement en fonction des différents paramètres  
+     *  
+     * @param idEvent l'ID de l'évènement pour lequel le user veut réserver une place
+     * @param idUser l'ID du user qui veut reserver une place
+     * @param siege le numéro de la place qu'il souhaite reserver
+     * @param cat la categorie du siege qu'il souhaite reserver entre A, B, C, ou D
+     * @return l'ID de la reservation si la reservation a pu être effectuée, sinon renvoie -1
+     * 
+     */
 	@Override
 	public long reserverPlace(long idEvent, long idUser, long siege, String cat) throws Exception{
 		Reservation reservation = new Reservation(idEvent,idUser);
@@ -187,6 +220,12 @@ public class StatelessSessionBean implements StatelessLocal {
 				
 	}
 	
+	/**
+     * Sert à obtenir l'ensemble des évènements existants  
+     *  
+     *@return la liste des évènements
+     * 
+     */
 	@Override
 	public List<Event> getEvents(){
 		// Method pour obtenir la liste des events
@@ -201,6 +240,13 @@ public class StatelessSessionBean implements StatelessLocal {
 		
 	}
 	
+	/**
+     * Sert à obtenir les nombres de places réservées pour chaque catégorie en fonction d'un évènement précis
+     *  
+     * @param idEvent l'ID de l'évènement en question
+     * @return une map associant la catégorie et le nombre de places occupées pour cette catégorie 
+     * 
+     */
 	@Override
 	public HashMap<Character,Integer> getCategories(int idEvent){
 		Query query = em.createNamedQuery("Reservation.getCat");
@@ -216,6 +262,14 @@ public class StatelessSessionBean implements StatelessLocal {
 		return map;
 	}
 	
+	/**
+     * Sert à obtenir la liste des sièges non occupées d'une certaine catégorie pour un évènement donné  
+     *  
+     * @param idEvent l'ID de l'évènement en question
+     * @param category la category en question A, B, C ou D
+     * @return la liste des numéros de sièges non occupées
+     * 
+     */
 	@Override
 	public List<Integer> getSiege(int idEvent,char category){
 		Query query = em.createNamedQuery("Reservation.getSiege");
@@ -293,8 +347,13 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	/**
-	 * Return the id if it worked correctly, -1 if not
-	 */
+     * Sert à trouver ou non l'utilisateur dans le cas de la connection 
+     *  
+     * @param email l'email du user
+     * @param password le mot de passe du user
+     * @return l'ID du user si le user a été trouvé et peut donc se connecter, sinon renvoie -1
+     * 
+     */
 	@Override
 	public long logIn(String email, String password){
 		Query query = em.createNamedQuery("User.logIn");
@@ -307,7 +366,13 @@ public class StatelessSessionBean implements StatelessLocal {
 		return -1;
 	}
 
-	
+	/**
+     * Etape du paiement : Sert à passer la réservation du statut de "pending" à "paye" 
+     *  
+     * @param idReservation l'ID de la reservation à payer
+     * @return true si le paiement à pu être fait, sinon renvoie false
+     * 
+     */
 	@Override
 	public boolean payer(int idReservation){
 		Query query = em.createNamedQuery("Reservation.findByID");
@@ -330,8 +395,16 @@ public class StatelessSessionBean implements StatelessLocal {
 		return false;
 	}
 	
+	/**
+     * Fonction spéciale "administrateur" : Sert à obtenir la somme totale du totale des réservations payées depuis le début
+     *  
+     * @param idAdmin l'ID du user connecté 
+     * @return une string contenant la somme totale si il s'agit bien de l'ID d'un administrateur, sinon renvoie un string d'"erreur"
+     * 
+     */
 	@Override
-	public long seeEarning(int idAdmin){
+	public long seeEarning(int idAdmin)
+	{
 		Query query = em.createNamedQuery("User.findByIdUsers");
 		query.setParameter("idUsers", idAdmin );
 		User user = (User) query.getSingleResult();
@@ -374,6 +447,14 @@ public class StatelessSessionBean implements StatelessLocal {
 		return -1;
 	}
 	
+	/**
+     * Fonction spéciale "administrateur" : Sert à obtenir le nombre de places payées par évènement par catégorie de place  
+     *  
+     * @param idAdmin l'ID du user connecté
+     * @param idEvent l'ID de l'évènement en question
+     * @return une string avec le résultat du nombre de places payées pour chaque categorie de l'event en question
+     * 
+     */
 	@Override
 	public String seeBookedPlace(int idAdmin, int idEvent){
 		String result = "";
