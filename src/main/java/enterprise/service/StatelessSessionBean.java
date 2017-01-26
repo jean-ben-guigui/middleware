@@ -73,7 +73,11 @@ import model.Reservation;
 import model.User;
 
 import static java.lang.Math.toIntExact;
-
+/**
+ * Implementation des fonction décritent dans statelessSessionBean
+ * @author middleware
+ *
+ */
 @Stateless(name = "BK")
 @TransactionManagement(TransactionManagementType.BEAN)
 public class StatelessSessionBean implements StatelessLocal {
@@ -82,6 +86,7 @@ public class StatelessSessionBean implements StatelessLocal {
 	private EJBContext context;
 	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
 	private EntityManager em;
+
 
 	@Override
 	public User getUser(String user) {
@@ -326,7 +331,7 @@ public class StatelessSessionBean implements StatelessLocal {
 	}
 	
 	@Override
-	public String seeEarning(int idAdmin){
+	public long seeEarning(int idAdmin){
 		Query query = em.createNamedQuery("User.findByIdUsers");
 		query.setParameter("idUsers", idAdmin );
 		User user = (User) query.getSingleResult();
@@ -363,10 +368,10 @@ public class StatelessSessionBean implements StatelessLocal {
 					}
 					somme += prixEvent*coefPlace;
 				}
-				return "Prix total:"+somme;
+				return somme;
 			}
 		}
-		return "User non enregistrer ou n'ayant pas des droits suffisants";
+		return -1;
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The persistent class for the BANK_ACCOUNT database table.
+ * The persistent class for the Event database table.
  * 
  */
 @Entity

@@ -15,7 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * The persistent class for the BANK_ACCOUNT database table.
+ * The persistent class for the Reservation database table.
  * 
  */
 @Entity
@@ -60,7 +60,7 @@ public class Reservation {
 	@Column(name = "DateRes")
 	private Timestamp dateRes;
 	
-
+	
 	
 	public Reservation() {
 		super();

@@ -10,7 +10,11 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 import model.Event;
-
+/**
+ * Class pour avoir le tester web
+ * @author middleware
+ *
+ */
 @Stateless
 @WebService
 public class Theatre {
@@ -111,7 +115,7 @@ public class Theatre {
 	
 	@WebMethod
 	public String seeEarning(int idAdmin){
-		return metier.seeEarning(idAdmin);
+		return "Earning:" + metier.seeEarning(idAdmin);
 	}
 	
 	@WebMethod
