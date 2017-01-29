@@ -80,6 +80,7 @@ public class User implements Serializable{
 			this.name = name;
 			this.events = events;
 			this.email = email;
+			this.type = "client";
 		}
 
 
