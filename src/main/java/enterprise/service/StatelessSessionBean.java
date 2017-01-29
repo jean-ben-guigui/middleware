@@ -88,16 +88,16 @@ public class StatelessSessionBean implements StatelessLocal {
 	private EntityManager em;
 
 	/**
-     * Sert à trouver un user par son nom 
+     * Sert à trouver un user par son email 
      *  
-     * @param user  le nom du user qu'on souhaite trouver
-     * @return le user correspondant au nom
+     * @param user  l'email du user qu'on souhaite trouver
+     * @return le user correspondant à l'email
      */
 	@Override
 	public User getUser(String user) {
 
-		Query query = em.createNamedQuery("User.findByName");
-		query.setParameter("name", user);
+		Query query = em.createNamedQuery("User.findByEmail");
+		query.setParameter("email", user);
 
 		User userResult = (User) query.getSingleResult();
 

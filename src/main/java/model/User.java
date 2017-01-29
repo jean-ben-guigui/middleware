@@ -24,6 +24,8 @@ import java.util.List;
 
 @NamedQuery( name = "User.findByName", query = "SELECT b FROM User b WHERE b.name = :name" ),
 
+@NamedQuery( name = "User.findByEmail", query = "SELECT b FROM User b WHERE b.email = :email" ),
+
 @NamedQuery( name = "User.logIn", query = "SELECT b FROM User b WHERE b.email = :email AND b.password = :password")
 
 
